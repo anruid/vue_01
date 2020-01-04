@@ -8,7 +8,6 @@ module.exports = {
     '@vue/standard'
   ],
   rules: {
-    'no-unused-vars':0,
     'sspace-before-function-paren':0,
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
@@ -276,7 +275,8 @@ module.exports = {
           objectsInObjects: false
         }
       ],
-      'array-bracket-spacing': [2, 'never']
+      'array-bracket-spacing': [2, 'never'],
+      'vue/no-unused-vars':false
   },
   parserOptions: {
     parser: 'babel-eslint'
