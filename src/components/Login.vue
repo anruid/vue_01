@@ -32,7 +32,7 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       // 登陆表单数据绑定对象
       loginForm: {
@@ -52,11 +52,11 @@ export default {
     }
   },
   methods: {
-    resetLoginForm () {
+    resetLoginForm() {
       // console.log(this)
       this.$refs.formRef.resetFields()
     },
-    loginF () {
+    loginF() {
       this.$refs.formRef.validate(async valid => {
         // console.log(valid)
         if (!valid) return
@@ -67,6 +67,7 @@ export default {
         // console.log(res)
 
         window.sessionStorage.setItem('token', res.data.token)
+        // document.cookie = res.data.token
         // 编程式导航到home页面
         this.$router.push('/home')
       })
