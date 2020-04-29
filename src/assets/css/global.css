@@ -1,20 +1,56 @@
-html, body, #app {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    min-width: 1000px;
+@media (max-width: 768px) {
+    html, body{
+        /* height: 90vmax; */
+        /* width: 10vmax; */
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    #app{
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        transform: rotate(90deg);
+        transform-origin: 0% 0%;
+        width: 100vh;
+        height: 100vw;
+        top: 0;
+        left: 100vw;
+    }
+    .el-breadcrumb{
+        margin-bottom: 15px;
+        font-size: 12px;
+    }
+    .el-card{
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
+    }
+    .el-table{
+        margin-top: 15px;
+        font-size: 12px;
+    }
+    .el-pagination{
+        margin-top: 15px;
+    }
 }
-.el-breadcrumb{
-    margin-bottom: 15px;
-    font-size: 12px;
-}
-.el-card{
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
-}
-.el-table{
-    margin-top: 15px;
-    font-size: 12px;
-}
-.el-pagination{
-    margin-top: 15px;
+@media (min-width: 768px) {
+    html, body, #app {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        min-width: 1000px;
+    }
+    .el-breadcrumb{
+        margin-bottom: 15px;
+        font-size: 12px;
+    }
+    .el-card{
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
+    }
+    .el-table{
+        margin-top: 15px;
+        font-size: 12px;
+    }
+    .el-pagination{
+        margin-top: 15px;
+    }
 }

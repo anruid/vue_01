@@ -23,10 +23,10 @@
   <!-- 用户列表区域 -->
   <el-table :data="userlist" border stripe>
     <el-table-column type="index"></el-table-column>
-    <el-table-column prop="username" label="姓名"></el-table-column>
+    <el-table-column prop="username" label="用户名"></el-table-column>
     <el-table-column prop="email" label="邮箱"></el-table-column>
     <el-table-column prop="mobile" label="电话"></el-table-column>
-    <el-table-column prop="role_name" label="角色"></el-table-column>
+    <el-table-column prop="role_name" label="岗位"></el-table-column>
     <el-table-column label="状态">
       <template slot-scope="scope">
         <el-switch v-model="scope.row.mg_state" @change="userStateChanged(scope.row)"></el-switch>
@@ -137,7 +137,7 @@
 export default {
   data() {
     // 验证邮箱规则
-    var checkEmail = (rule, value, cb) => {
+    const checkEmail = (rule, value, cb) => {
       // 验证邮箱的正则表达式
       const regEmail = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/
       if (regEmail.test(value)) {
@@ -146,7 +146,7 @@ export default {
       cb(new Error('请输入合法的邮箱'))
     }
     // 验证手机号规则
-    var checkMobile = (rule, value, cb) => {
+    const checkMobile = (rule, value, cb) => {
       const regMobile = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/
       if (regMobile.test(value)) {
         return cb()
@@ -265,10 +265,10 @@ export default {
           this.$message.error('添加用户失败!')
         }
         this.$message.success('添加用户成功')
-        // 隐藏用户添加对话框
-        this.addDialogVisible = false
         // 刷新获取用户列表数据
         this.getUserList()
+        // 隐藏用户添加对话框
+        this.addDialogVisible = false
       })
     },
     // 显示编辑用户的对话框

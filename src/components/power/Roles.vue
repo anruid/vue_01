@@ -12,7 +12,7 @@
   <!-- 添加角色按钮区 -->
   <el-row>
     <el-col>
-      <el-button type="primary">添加角色</el-button>
+      <el-button type="primary" @click="addRoleDialogVisible = true">添加角色</el-button>
     </el-col>
   </el-row>
   <!-- 角色列表区 -->
@@ -53,7 +53,7 @@
     <el-table-column label="操作" width="300px">
       <template slot-scope="scope">
         <el-button size="mini" type="primary" icon="el-icon-edit">编辑</el-button>
-        <el-button size="mini" type="danger" icon="el-icon-delete">删除</el-button>
+        <el-button size="mini" type="danger" icon="el-icon-delete" @click="deleteRole(scope.row.id)">删除</el-button>
         <el-button size="mini" type="warning" icon="el-icon-setting" @click="showSetRightsDialog(scope.row)">分配权限</el-button>
       </template>
     </el-table-column>
@@ -72,6 +72,26 @@
     <el-button type="primary" @click="allotRights">确 定</el-button>
   </span>
 </el-dialog>
+
+<!-- 添加角色对话框 -->
+<el-dialog
+  title="添加角色"
+  :visible.sync="addRoleDialogVisible"
+  width="35%" @close="addRoleDialogClosed">
+    <el-form :model="addRoleDialogForm" :rules="addRoleRulesForm" ref="addRoleDialogRef" label-width="85px">
+      <el-form-item label="角色名称" prop="roleName">
+        <el-input v-model="addRoleDialogForm.roleName"></el-input>
+      </el-form-item>
+      <el-form-item label="角色描述">
+        <el-input v-model="addRoleDialogForm.roleDesc"></el-input>
+      </el-form-item>
+    </el-form>
+  <span slot="footer">
+    <el-button @click="addRoleDialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="addRole">确 定</el-button>
+  </span>
+</el-dialog>
+
 </div>
 </template>
 
@@ -93,7 +113,18 @@ export default {
       // 默认选中节点ID值
       defKeys: [],
       // 即将分配权限的角色Id
-      roleId: ''
+      roleId: '',
+      // 显示与隐藏添加角色的对话框
+      addRoleDialogVisible: false,
+      // 添加角色对话框的数据绑定对象
+      addRoleDialogForm: {
+        roleName: '',
+        roleDesc: ''
+      },
+      // 添加角色对话框的表单验证
+      addRoleRulesForm: {
+        roleName: [{ required: true, message: '请输入岗位名称', trigger: 'blur' }]
+      }
     }
   },
   created() {
@@ -105,7 +136,7 @@ export default {
       const { data: res } = await this.$http.get('roles')
       if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
       this.roleList = res.data
-      console.log(this.roleList)
+      // console.log(this.roleList)
     },
     // 根据id删除对应权限
     async removeRightsById(role, rightsId) {
@@ -128,7 +159,7 @@ export default {
       if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
       // 把获取到的权限数据保存到data中
       this.rightsList = res.data
-      console.log(this.rightsList)
+      // console.log(this.rightsList)
 
       this.getLeafKeys(role, this.defKeys)
       this.setRightsDialog = true
@@ -157,6 +188,39 @@ export default {
       this.$message.success(res.meta.msg)
       this.getRolesList()
       this.setRightsDialog = false
+    },
+    // 添加角色
+    addRole() {
+      // 验证表单是否符合要求
+      this.$refs.addRoleDialogRef.validate(async valid => {
+        // console.log(valid)
+        if (!valid) return
+        // 可以发起请求
+        const { data: res } = await this.$http.post('roles', this.addRoleDialogForm)
+        if (res.meta.status !== 201) return this.$message.error(res.meta.msg)
+        this.$message.success(res.meta.msg)
+        this.getRolesList()
+        this.addRoleDialogVisible = false
+      })
+    },
+    // 监听添加角色对话框关闭事件
+    addRoleDialogClosed() {
+      this.addRoleDialogForm.roleName = ''
+      this.addRoleDialogForm.roleDesc = ''
+    },
+    // 删除角色
+    async deleteRole(id) {
+      const deleteResult = await this.$confirm('此操作将永久删除该角色, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => err)
+      // console.log(deleteResult)
+      if (deleteResult !== 'confirm') return this.$message.info('取消删除')
+      const { data: res } = await this.$http.delete('roles/' + id)
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.getRolesList()
+      this.$message.success(res.meta.msg)
     }
   }
 }
@@ -173,6 +237,13 @@ export default {
    border-bottom: 1px solid #eee
 }
 .vcenter{
+  display: flex;
+  align-items: center
+}
+.el-input{
+  width: 90%
+}
+.el-form{
   display: flex;
   align-items: center
 }

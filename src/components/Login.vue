@@ -3,7 +3,7 @@
     <div class="login_box">
       <!-- 头像区域 -->
       <div class="avatar_box">
-        <img src="../assets/logo.png" alt />
+        <img src="../assets/1.png" alt />
       </div>
       <!-- 登陆表单区 -->
       <el-form :model="loginForm" label-width="0px" class="login_form" :rules="rules" ref="formRef">
@@ -88,12 +88,12 @@ export default {
   border-radius: 5px;
   position: absolute;
   left: 50%;
-  top: 40%;
+  top: 55%;
   transform: translate(-50%, -50%);
 }
 .avatar_box {
-  height: 130px;
-  width: 130px;
+  height: 150px;
+  width: 150px;
   border: 1px solid #eee;
   border-radius: 50%;
   padding: 5px;
